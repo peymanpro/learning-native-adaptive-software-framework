@@ -1,0 +1,438 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{titlesec}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue,citecolor=black,pdftitle={Learning-Native Adaptive Software Framework (LNASF): Technical Concept and Architecture Specification},pdfauthor={Peyman Salimi},pdfsubject={Technical Concept and Architecture Specification},pdfkeywords={Machine Learning, Adaptive Software, Runtime Adaptation, Learning-Enabled Software}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,columns=fullflexible}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\setlist{nosep}
+
+\title{Learning-Native Adaptive Software Framework (LNASF)\\\large Technical Concept and Architecture Specification}
+\author{Peyman Salimi\\\texttt{salimipeyman@gmail.com}\\\small Alternate: \texttt{pmnslm6344@gmail.com}}
+\date{Version 0.1\\August 28, 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section*{Keywords}
+\addcontentsline{toc}{section}{Keywords}
+Machine Learning; Artificial Intelligence; Self-Adaptive Software; Adaptive Software; Online Learning; Runtime Adaptation; Learning-Enabled Software; Learning-Native Software Components; Adaptive Software Components; Software Libraries; Software Frameworks; Runtime Intelligence; Native Machine Learning; Scratch Machine Learning; Predictive Software; Adaptive Systems; Feedback-Driven Software.
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+Software has traditionally been built around rules that are designed in advance. Developers decide how a library should cache data, how a framework should schedule work, how a runtime should handle failures, or how a user interface should load resources.
+
+That approach is predictable and often effective. However, real-world software rarely operates under stable conditions. Users behave differently over time, workloads change, network conditions fluctuate, and the cost of different execution strategies can vary significantly.
+
+This document proposes the \textbf{Learning-Native Adaptive Software Framework (LNASF)}, a general architectural framework for building software components that can learn from their own runtime experience and use that knowledge to adapt future behavior.
+
+The framework is intended for reusable software components, including libraries, frameworks, runtimes, developer tools, frontend systems, backend systems, and infrastructure components.
+
+The central idea is a continuous feedback loop:
+\[
+Observe \rightarrow Learn \rightarrow Predict \rightarrow Decide \rightarrow Adapt \rightarrow Measure \rightarrow Learn
+\]
+
+LNASF does not claim to introduce machine learning, self-adaptive software, runtime adaptation, online learning, or learning-enabled components as new concepts. These areas have extensive prior research and established techniques.
+
+The contribution proposed here is a unified architectural model for treating \textbf{learning as an explicit, reusable capability of software components}, with particular emphasis on native learning within the host ecosystem, scratch implementations of learning mechanisms, explicit decision policies, safety constraints, deterministic fallbacks, and applicability across different programming languages and software layers.
+
+\section{Motivation}
+Most software libraries and frameworks behave according to rules that are determined before deployment.
+
+Examples include:
+\begin{lstlisting}
+timeout = 500 ms
+retryCount = 3
+cacheTTL = 5 min
+prefetch = enabled
+concurrency = 4
+\end{lstlisting}
+
+These values and strategies may work well in development and testing, but they are not necessarily optimal under every runtime condition.
+
+Users change their behavior. Workloads change. Network conditions fluctuate. Failure patterns evolve. Resource availability varies. A policy that was reasonable yesterday may not be the best policy tomorrow.
+
+LNASF asks a practical engineering question:
+\begin{quote}
+Can a reusable software component observe its runtime experience, learn from that experience, and use the learned knowledge to make better decisions later?
+\end{quote}
+
+\section{Core Idea}
+The central concept of LNASF is a \textbf{Learning-Native Adaptive Software Component (LNASC)}.
+
+Such a component has a normal deterministic implementation, but also contains a learning capability that can use runtime observations to improve selected decisions.
+
+A simplified representation is:
+\[
+Component = Deterministic\ Baseline + Learning\ Layer + Adaptive\ Policy
+\]
+
+The learning layer does not replace the original software logic. It provides an additional source of information that can influence selected runtime decisions.
+
+The fundamental learning loop is:
+\[
+O_t \rightarrow M_t \rightarrow \hat{Y}_{t+1} \rightarrow D_t \rightarrow A_t \rightarrow R_t \rightarrow M_{t+1}
+\]
+
+The model may be updated using:
+\[
+M_{t+1}=U(M_t,O_t,R_t)
+\]
+
+\section{What LNASF Is and Is Not}
+LNASF is an architectural proposal rather than a single machine-learning algorithm or product.
+
+It is intended to provide a common way of reasoning about what a software component should observe, learn, predict, decide, constrain, and evaluate.
+
+LNASF does not claim to invent machine learning, online learning, self-adaptive software, autonomic computing, MAPE-K, runtime adaptation, predictive prefetching, adaptive caching, adaptive scheduling, or learning-enabled components. These areas are treated as prior art and foundations.
+
+\section{Learning as a Software-Component Capability}
+LNASF treats learning as an explicit capability of a reusable software component.
+
+\begin{lstlisting}
+Application
+    -> Reusable Software Component
+       -> Deterministic Behavior
+       -> Learning Capability
+          -> Runtime Experience
+             -> Adaptation
+\end{lstlisting}
+
+The intention is not to turn every component into an autonomous system. The intention is to make adaptive capability a deliberate architectural choice.
+
+\section{Native Learning}
+One of the design principles of LNASF is \textbf{native learning}.
+
+The learning layer should, as far as practical, operate within the language and runtime ecosystem of the host software.
+
+\begin{lstlisting}
+TypeScript Library -> TypeScript Learning Engine
+C# Library        -> C# Learning Engine
+Go Library        -> Go Learning Engine
+Rust Library      -> Rust Learning Engine
+Python Library    -> Python Learning Engine
+\end{lstlisting}
+
+The baseline architecture should not require a different programming language, an external inference service, or a remote machine-learning runtime merely to provide adaptive behavior.
+
+\begin{lstlisting}
+Host Software
+    -> Native Learning Layer
+       -> Prediction
+          -> Decision
+             -> Adaptation
+\end{lstlisting}
+
+Native learning is a design principle proposed by LNASF. It is not presented as a historical first.
+
+\section{Scratch Learning}
+A reference implementation should not require a specialized machine-learning framework to execute the essential learning mechanism.
+
+Learning methods may be constructed from arithmetic, probability, statistics, linear algebra, numerical methods, optimization, and data structures.
+
+For example:
+\[
+P(j|i)=\frac{N(i,j)}{N(i)}
+\]
+
+or an online parameter update such as:
+\[
+w_{t+1}=w_t-\eta\nabla L(w_t)
+\]
+
+The purpose is transparency and portability of the learning mechanism rather than avoidance of every standard-library function.
+
+\section{Prediction Is Not Action}
+A central LNASF principle is:
+\[
+Prediction \neq Action
+\]
+
+The decision process may be modeled as:
+\[
+Decision=f(Prediction,Confidence,ExpectedBenefit,ExpectedCost,Constraints)
+\]
+
+One possible utility formulation is:
+\[
+U(a|x)=E[Benefit(a)|x]-E[Cost(a)|x]
+\]
+
+with:
+\[
+a^*=\arg\max_a E[U(a|x)]
+\]
+
+subject to applicable constraints.
+
+\section{Confidence and Uncertainty}
+For example:
+\[
+P(A|X)=0.54
+\]
+may not justify an adaptation, while:
+\[
+P(A|X)=0.96
+\]
+may justify it, depending on the cost and risk.
+
+An adaptive component may therefore use:
+\[
+Confidence \geq \tau
+\]
+before enabling a given adaptation.
+
+\section{Deterministic Fallback}
+A learning-enabled component must remain useful when learning is unavailable or unreliable.
+
+\begin{lstlisting}
+Learned Policy
+    -> Validate
+       -> Safe? ---- Yes -> Adaptive Action
+             \---- No  -> Deterministic Baseline
+\end{lstlisting}
+
+Conceptually:
+\[
+Behavior=Deterministic\ Baseline+Optional\ Adaptive\ Intelligence
+\]
+
+\section{Levels of Adaptation}
+\subsection{Parameter Adaptation}
+The component preserves its algorithm or strategy but changes parameters such as timeout, retry delay, cache TTL, debounce interval, concurrency limit, or prefetch threshold.
+
+\subsection{Strategy Adaptation}
+The component selects between predefined strategies, for example aggressive, balanced, and conservative prefetching.
+
+\subsection{Structural Adaptation}
+The component changes an execution path, composition, or selected implementation. This is treated as an advanced capability.
+
+\section{Learning Modes}
+\subsection{Passive}
+Observe and learn without changing behavior.
+
+\subsection{Advisory}
+Generate predictions or recommendations while leaving the final decision to the application or developer.
+
+\subsection{Adaptive}
+Automatically apply adaptations permitted by policy.
+
+\subsection{Autonomous}
+Continuously optimize behavior within explicit safety, resource, and policy constraints.
+
+\section{Learning Scope}
+\subsection{Local Learning}
+The model belongs to a component, application, session, process, device, or user.
+
+\subsection{Shared Learning}
+Observations from multiple instances contribute to a shared model.
+
+\subsection{Hybrid Learning}
+A shared model provides a baseline while local models adapt to local conditions:
+\[
+M=M_{global}+M_{local}
+\]
+
+\section{Feedback Loop}
+The observed result of an action becomes evidence for subsequent learning:
+\begin{lstlisting}
+Observation
+    -> Learning
+       -> Prediction
+          -> Decision
+             -> Action
+                -> Outcome
+                   -> Evaluation
+                      -> Model Update
+                         -> Observation
+\end{lstlisting}
+
+\section{Model Drift and Learning Failure}
+A learning-enabled component should consider cold start, insufficient data, concept drift, distribution changes, prediction error, adaptation instability, model degradation, and unexpected outcomes.
+
+\section{Privacy}
+For client-side systems, local-first learning is an important option:
+\begin{lstlisting}
+User Behavior
+    -> Local Observation
+       -> Local Model
+          -> Local Adaptation
+\end{lstlisting}
+
+Remote aggregation should be optional, explicit, and governed by privacy requirements.
+
+\section{Frontend Applications}
+Possible applications include predictive prefetching, adaptive loading, adaptive caching, request prioritization, adaptive debouncing, learnable state behavior, and resource scheduling.
+
+For example:
+\[
+P(Page_B|Page_A)=0.87
+\]
+
+A client can combine that estimate with confidence and network cost before deciding whether to prefetch Page B. Predictive prefetching itself is established prior art and is included here only as an example application.
+
+\section{Backend Applications}
+A backend component may estimate:
+\[
+P(success|errorType,service)
+\]
+
+and choose among retry, delayed retry, or fail-fast behavior. Other applications include adaptive timeout, adaptive retry, adaptive concurrency, workload-aware scheduling, cache optimization, and resource allocation.
+
+\section{Runtime and Infrastructure Applications}
+Runtime and infrastructure components may observe CPU, memory, I/O latency, request rate, queue depth, failure rate, and workload patterns. A general workload loop can be expressed as:
+\[
+Workload_t \rightarrow Prediction_t \rightarrow SchedulingDecision_t
+\]
+
+\section{Independence from Programming Language}
+The architecture is intentionally language-independent and can be implemented in TypeScript, C\#, Java, Go, Rust, Python, and other ecosystems. The architecture is shared while implementation details remain native to the host environment.
+
+\section{Independence from Learning Algorithm}
+Potential implementations include frequency models, conditional probability, moving averages, Bayesian updating, Markov models, online gradient methods, contextual bandits, and other suitable methods.
+
+\section{Developer Model}
+An LNASF-enabled component should make explicit what it observes, learns, predicts, and changes, what constraints limit adaptation, what happens under low confidence, what the deterministic fallback is, and how success is measured.
+
+\section{Evaluation}
+An adaptive component should be compared against a deterministic baseline. Potential metrics include:
+\begin{itemize}
+\item Latency
+\item CPU utilization
+\item Memory usage
+\item Network cost
+\item Error rate
+\item Prediction accuracy
+\item Adaptation overhead
+\item False-adaptation rate
+\end{itemize}
+
+A general formulation is:
+\[
+NetUtility=Benefit-Cost-AdaptationOverhead
+\]
+
+\section{Prior Art and Related Work}
+The proposal is positioned within established bodies of research.
+
+Kephart and Chess articulated the vision of autonomic computing and self-managing systems. Self-adaptive software subsequently developed extensive feedback-driven models, including MAPE-K. Machine learning has been widely studied as a mechanism for supporting self-adaptation. REX demonstrated online learning for runtime emergent software systems. ML-DEECo is especially relevant because it explores machine-learning-enabled components in a component-based self-organizing architecture.
+
+These works establish that learning, runtime adaptation, feedback loops, and learning-enabled components are not new concepts.
+
+\section{Position Relative to Prior Art}
+LNASF does not claim to invent:
+\begin{lstlisting}
+Machine Learning
+Self-Adaptive Software
+Autonomic Computing
+MAPE-K
+Online Learning
+Runtime Adaptation
+Predictive Prefetching
+Adaptive Caching
+Adaptive Scheduling
+Learning-Enabled Components
+\end{lstlisting}
+
+Instead, the proposed framework focuses on the following combination:
+\[
+\begin{aligned}
+Reusable\ Software\ Component
+&+ Native\ Learning + Prediction\\
+&+ Explicit\ Decision\ Policy + Safety\ Constraints\\
+&+ Deterministic\ Baseline + Feedback
+\end{aligned}
+\]
+
+This is presented as a technical proposal requiring implementation and empirical validation.
+
+\section{Research Hypothesis}
+\begin{quote}
+Reusable software components can benefit from treating learning as an explicit, native, and constrained architectural capability, allowing selected runtime decisions to improve through accumulated experience while preserving deterministic fallback behavior.
+\end{quote}
+
+\section{Potential Software Family}
+\begin{lstlisting}
+Learning-Native Software
+|
++-- Frontend
+|   +-- Predictive Prefetch
+|   +-- Adaptive Loading
+|   +-- Adaptive Cache
+|   +-- Learnable State
+|
++-- Backend
+|   +-- Adaptive Retry
+|   +-- Adaptive Timeout
+|   +-- Adaptive Scheduling
+|   +-- Adaptive Concurrency
+|
++-- Runtime
+|   +-- Workload Prediction
+|   +-- Resource Allocation
+|   +-- Execution Adaptation
+|
++-- Infrastructure
+    +-- Failure Prediction
+    +-- Recovery Policies
+    +-- Resource Optimization
+\end{lstlisting}
+
+\section{Development Roadmap}
+\begin{enumerate}
+\item Concept: formalize terminology, boundaries, principles, and architecture.
+\item Mathematical Learning Core: implement simple learning mechanisms from fundamental primitives.
+\item Reference Implementation: build the first learning-native component in TypeScript, with React as an initial demonstration.
+\item Evaluation: compare adaptive and deterministic behavior under realistic workloads.
+\item Advanced Learning: explore Bayesian models, Markov models, online learning, contextual models, and bandit-based methods.
+\item Additional Ecosystems: investigate C\#, Go, Rust, Python, and Java implementations.
+\item Framework and Runtime Applications: investigate larger libraries, frameworks, runtimes, and infrastructure systems.
+\end{enumerate}
+
+\section{Limitations and Open Questions}
+Open questions include cold start, model drift, adaptation stability, learning cost, reproducibility, safety guarantees, privacy, and cross-language consistency.
+
+\section{Design Principles}
+\begin{enumerate}
+\item Learning is a capability.
+\item Native execution is preferred.
+\item Reference learning cores should be understandable from fundamental primitives.
+\item Prediction is not action.
+\item Adaptation is constrained.
+\item Deterministic fallback is mandatory.
+\item Feedback matters.
+\item Learning should be measurable.
+\end{enumerate}
+
+\section{Scope of This Disclosure}
+This document records, as Version 0.1, the author's proposed terminology, architectural organization, mathematical framing, design principles, and implementation directions for LNASF.
+
+It intentionally distinguishes established prior art from the specific framework formulation proposed here.
+
+This document is a technical disclosure. It is not legal advice and does not by itself create exclusive rights in abstract ideas or guarantee patentability.
+
+\section{Citation}
+Salimi, Peyman. (2026). \textit{Learning-Native Adaptive Software Framework (LNASF): Technical Concept and Architecture Specification}, Version 0.1.
+
+\section{References}
+\begin{enumerate}
+\item Kephart, J. O., \& Chess, D. M. (2003). The Vision of Autonomic Computing. \textit{IEEE Computer}, 36(1), 41-50. DOI: 10.1109/MC.2003.1160055.
+\item Wong, T., Wagner, M., \& Treude, C. (2022). Self-adaptive systems: A systematic literature review across categories and domains. \textit{Information and Software Technology}.
+\item Gheibi, O., Weyns, D., \& Quin, F. (2021). Applying Machine Learning in Self-Adaptive Systems: A Systematic Literature Review. \textit{ACM Transactions on Autonomous and Adaptive Systems}. DOI: 10.1145/3469440.
+\item Porter, B., Grieves, M., Rodrigues Filho, R., \& Leslie, D. (2016). REX: A Development Platform and Online Learning Approach for Runtime Emergent Software Systems. \textit{Proceedings of OSDI 2016}, 333-348.
+\item Töpfer, M., Abdullah, M., Kruliš, M., Bureš, T., \& Hnětynka, P. (2022). ML-DEECo: A Machine-Learning-Enabled Framework for Self-organizing Components. \textit{ACSOS 2022}. DOI: 10.1109/ACSOSC56246.2022.00033.
+\item Töpfer, M., Abdullah, M., Bureš, T., Hnětynka, P., \& Kruliš, M. (2023). Machine-learning abstractions for component-based self-optimizing systems. \textit{International Journal on Software Tools for Technology Transfer}, 25, 717-731. DOI: 10.1007/s10009-023-00726-x.
+\end{enumerate}
+
+\end{document}

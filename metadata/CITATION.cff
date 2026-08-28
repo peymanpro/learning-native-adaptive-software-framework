@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use or reference this specification, please cite it as follows."
+title: "Learning-Native Adaptive Software Framework (LNASF): Technical Concept and Architecture Specification"
+type: software
+version: "0.1"
+date-released: 2026-08-28
+authors:
+  - family-names: Salimi
+    given-names: Peyman
+    email: "salimipeyman@gmail.com"
+    affiliation: "Independent"
+keywords:
+  - machine learning
+  - adaptive software
+  - self-adaptive software
+  - runtime adaptation
+  - online learning
+  - learning-enabled software
+  - software frameworks
+  - software libraries
+  - native learning
+  - adaptive systems
+license: CC-BY-4.0
+repository-code: "[REPOSITORY_URL]"
+abstract: >-
+  A technical concept and architecture specification for reusable software
+  components that observe runtime behavior, learn from experience, predict,
+  make constrained decisions, and adapt selected aspects of their behavior
+  while retaining deterministic fallback behavior.
