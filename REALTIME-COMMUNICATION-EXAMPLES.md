@@ -63,13 +63,28 @@ The following runs were verified as successful on the current source changes or 
 
 | Repository | Verified checks | Workflow |
 | --- | --- | --- |
-| Express + Socket.IO | Syntax checks and 10 Node tests, including validation, health and metrics endpoint, model update, operating modes, fallback and a deterministic baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-express/actions/runs/37985991120) |
-| NestJS + Socket.IO | TypeScript build and 8 Node tests, including model learning, action separation, fallback and same-trace baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-nestjs/actions/runs/37985997538) |
+| Express + Socket.IO | Syntax checks and 10 Node tests, including validation, health and metrics endpoint, model update, operating modes, fallback and a deterministic baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-express/actions/runs/37986262861) |
+| NestJS + Socket.IO | TypeScript build and 8 Node tests, including model learning, action separation, fallback and same-trace baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-nestjs/actions/runs/37986269231) |
 | ASP.NET Core + SignalR | .NET 8 Release build and 19 xUnit tests, including validation, LNASF modes, fallback and baseline comparison | [Successful CI](https://github.com/peymanpro/signalr-aspnetcore/actions/runs/37986010145) |
-| Next.js + SignalR | Lint, syntax checks, 13 Node tests and production build | [Successful CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37986007557) |
-| React + Socket.IO | 2 Jest suites, 8 tests and production build | [Successful CI](https://github.com/peymanpro/socketio-react/actions/runs/37986015639) |
+| Next.js + SignalR | Lint, syntax checks, 13 Node tests and production build | [Successful CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37986275372) |
+| React + Socket.IO | 2 Jest suites, 8 tests and production build | [Successful CI](https://github.com/peymanpro/socketio-react/actions/runs/37986280943) |
 
 These links are snapshots from GitHub Actions. Later commits or dependency updates can change the current status.
+
+## Dependency security audit snapshot
+
+The JavaScript CI workflows run a non-blocking, package-level npm audit report. Snapshot recorded on 2026-10-09:
+
+| Repository | Audit summary | Finding to prioritize | Interpretation |
+| --- | --- | --- | --- |
+| Express + Socket.IO | 11 findings: 1 critical, 7 high, 3 moderate | Transitive proxy-addr reports GHSA-jqcg-44mw-7w3h; Engine.IO and Socket.IO parser findings also appear | The report marks fixes available for the listed transitive packages. A dependency update still needs a lockfile change plus tests |
+| NestJS + Socket.IO | 34 findings: 1 critical, 16 high, 13 moderate, 4 low | Transitive proxy-addr is critical; the report also flags the current Nest 10 dependency line and old build tooling | Several suggested fixes require a major Nest upgrade, so this is not a safe one-step audit fix |
+| Next.js + SignalR | 16 findings: 1 critical, 13 high, 1 moderate, 1 low | The direct next dependency is pinned to 16.2.4 and falls into multiple reported advisory ranges, including GHSA-8h8q-6873-q5fj | npm audit reports next 16.4.0 as a same-major candidate; the manifest and lockfile still require a controlled update and a full CI run |
+| React + Socket.IO | 94 findings: 3 critical, 74 high, 12 moderate, 5 low | The direct react-scripts 5.0.1 toolchain has a broad legacy dependency tree; critical transitive findings include proxy-addr, shell-quote and websocket-driver | This likely needs a controlled build-tool migration or a separately reviewed dependency plan, not an automatic force upgrade |
+
+These are advisory database findings, not a claim that every package is exploitable in this application's runtime. The audit workflow logs record each package's direct/transitive status and suggested fix metadata. The repositories remain useful as engineering samples, but **do not treat the JavaScript dependency posture as production-release clearance** until the findings are triaged, fixes are applied deliberately, and tests are rerun. No automated dependency fix or major migration was applied as part of the LNASF integration.
+
+References: [proxy-addr advisory](https://github.com/advisories/GHSA-jqcg-44mw-7w3h), [Engine.IO advisory](https://github.com/advisories/GHSA-2gc4-cqfq-p2gv), [Socket.IO parser advisory](https://github.com/advisories/GHSA-2m8v-j782-fhvr), [Next.js advisory](https://github.com/advisories/GHSA-8h8q-6873-q5fj).
 
 ## Limitations
 
