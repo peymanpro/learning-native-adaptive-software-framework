@@ -1,7 +1,7 @@
 # LNASF Real-Time Communication Examples
 
 **Status:** Verified reference examples of selected LNASF principles  
-**Reviewed:** 2026-10-09
+**Reviewed:** 2026-10-10
 
 This document records five intentionally limited integrations of the Learning-Native Adaptive Software Framework (LNASF) in real-time client and server repositories. These are reference examples of selected principles, not complete implementations of every framework mode or capability.
 
@@ -53,7 +53,7 @@ A candidate is eligible only with at least three observations, confidence of at 
 
 The only candidate delays are 0, 2,000, 5,000 and 10,000 milliseconds. Retry scheduling is capped at four attempts or 30 seconds. In Passive mode, the model learns while leaving the schedule unchanged. Advisory reports the recommendation without applying it. Adaptive may select a candidate only when the policy gates pass. An intentional leave or unmount is not treated as evidence that a retry failed.
 
-Configure NEXT_PUBLIC_LNASF_MODE for Next.js/SignalR and REACT_APP_LNASF_MODE for React/Socket.IO. Both default to Passive. Their learned state is held in memory for the current page session.
+Configure NEXT_PUBLIC_LNASF_MODE for Next.js/SignalR and VITE_LNASF_MODE for React/Socket.IO. Both default to Passive. Their learned state is held in memory for the current page session.
 
 The tests inject deterministic timestamps or synthetic outcome counts to establish model updates, the separation between prediction and action, mode behavior, fallback, feedback and retry limits. They do not simulate a real network and do not support a real-world reconnect-performance claim.
 
@@ -65,28 +65,28 @@ The following runs were verified as successful on the current source changes or 
 
 | Repository | Verified checks | Workflow |
 | --- | --- | --- |
-| Express + Socket.IO | Syntax checks and 12 Node tests, including model/policy tests and a live two-client Engine.IO polling integration that verifies adaptive duplicate-start suppression while typing-stop and primary chat messages still pass through | [Successful CI](https://github.com/peymanpro/socketio-express/actions/runs/37990992781) |
-| NestJS + Socket.IO | TypeScript build and 9 Node tests, including model/policy checks and live two-client Socket.IO transport integration for adaptive typing suppression, typing-stop, and primary chat delivery | [Successful CI](https://github.com/peymanpro/socketio-nestjs/actions/runs/37990998396) |
+| Express + Socket.IO | Syntax checks and 12 Node tests, including model/policy tests and a live two-client Engine.IO polling integration that verifies adaptive duplicate-start suppression while typing-stop and primary chat messages still pass through | [Successful CI after dependency remediation](https://github.com/peymanpro/socketio-express/actions/runs/37994554777) |
+| NestJS + Socket.IO | NestJS 12/TypeScript 6 build and 9 Node tests, including model/policy checks and live two-client Socket.IO transport integration for adaptive typing suppression, typing-stop, and primary chat delivery | [Successful CI after dependency remediation](https://github.com/peymanpro/socketio-nestjs/actions/runs/37994534363) |
 | ASP.NET Core + SignalR | .NET 8 Release build (0 warnings/errors) and 20 xUnit tests, including a live two-client WebSocket/SignalR Hub integration verifying adaptive typing suppression while stop and primary messages remain deliverable | [Successful CI](https://github.com/peymanpro/signalr-aspnetcore/actions/runs/37991401270) |
-| Next.js + SignalR | Lint, syntax checks, 15 Node tests and production build | [Successful CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37990292184) |
-| React + Socket.IO | 2 Jest suites, 10 tests and production build | [Successful CI](https://github.com/peymanpro/socketio-react/actions/runs/37990300412) |
+| Next.js + SignalR | Next.js 16.4.0 / React 19.3.0; lint, syntax checks, 15 Node tests and production build | [Successful CI after dependency remediation](https://github.com/peymanpro/signalr-nextjs/actions/runs/37994540154) |
+| React + Socket.IO | Migrated from Create React App to Vite/Vitest; ESLint 9, 13 tests across 3 files, bounded 1,000-message history and production build | [Successful CI after dependency remediation](https://github.com/peymanpro/socketio-react/actions/runs/37994528123) |
 
 These links are snapshots from GitHub Actions. Later commits or dependency updates can change the current status.
 
 ## Dependency security audit snapshot
 
-The JavaScript CI workflows run a non-blocking, package-level npm audit report. Snapshot recorded on 2026-10-09:
+The JavaScript CI workflows run a non-blocking, package-level npm audit report. The original snapshot was recorded on 2026-10-09; the table below records the post-remediation `main` CI snapshots verified on 2026-10-09/10.
 
 | Repository | Audit summary | Finding to prioritize | Interpretation |
 | --- | --- | --- | --- |
-| Express + Socket.IO | 11 findings: 1 critical, 7 high, 3 moderate | Transitive proxy-addr reports GHSA-jqcg-44mw-7w3h; Engine.IO and Socket.IO parser findings also appear | The report marks fixes available for the listed transitive packages. A dependency update still needs a lockfile change plus tests |
-| NestJS + Socket.IO | 34 findings: 1 critical, 16 high, 13 moderate, 4 low | Transitive proxy-addr is critical; the report also flags the current Nest 10 dependency line and old build tooling | Several suggested fixes require a major Nest upgrade, so this is not a safe one-step audit fix |
-| Next.js + SignalR | 16 findings: 1 critical, 13 high, 1 moderate, 1 low | The direct next dependency is pinned to 16.2.4 and falls into multiple reported advisory ranges, including GHSA-8h8q-6873-q5fj | npm audit reports next 16.4.0 as a same-major candidate; the manifest and lockfile still require a controlled update and a full CI run |
-| React + Socket.IO | 94 findings: 3 critical, 74 high, 12 moderate, 5 low | The direct react-scripts 5.0.1 toolchain has a broad legacy dependency tree; critical transitive findings include proxy-addr, shell-quote and websocket-driver | This likely needs a controlled build-tool migration or a separately reviewed dependency plan, not an automatic force upgrade |
+| Express + Socket.IO | 0 findings | Lockfile refreshed; `nodemon` removed in favor of native Node watch mode; `qs` pinned to a compatible patched range | Clean npm audit snapshot, syntax checks and 12 tests including live transport passed |
+| NestJS + Socket.IO | 0 findings | Upgraded to NestJS 12 and TypeScript 6; refreshed lockfile and made compiler output settings explicit | Clean npm audit snapshot, build and all 9 tests including live transport passed |
+| Next.js + SignalR | 5 high findings; 0 critical, moderate or low | Next.js and eslint-config-next are 16.4.0; React and React DOM are 19.3.0. Remaining findings are in the dev-time ESLint dependency tree (`eslint-config-next`, `@next/eslint-plugin-next`, `fast-glob`, `micromatch`, `braces`) | Runtime framework updates and full CI passed. The `braces` advisory GHSA-vfj7-8cjw-p6xm currently reports no patched release; keep release gated pending upstream remediation or a reviewed alternative lint toolchain |
+| React + Socket.IO | 0 findings | Replaced Create React App / `react-scripts@5` with Vite/Vitest and regenerated the lockfile; message history is capped at 1,000 entries | Clean npm audit snapshot, ESLint, 13 tests and production build passed |
 
-These are advisory database findings, not a claim that every package is exploitable in this application's runtime. The audit workflow logs record each package's direct/transitive status and suggested fix metadata. The repositories remain useful as engineering samples, but **do not treat the JavaScript dependency posture as production-release clearance** until the findings are triaged, fixes are applied deliberately, and tests are rerun. No automated dependency fix or major migration was applied as part of the LNASF integration.
+These are advisory database findings, not a claim that every package is exploitable in this application's runtime. The updated Express, NestJS and React dependency trees have clean current audit snapshots. Next.js's remaining five findings are in the development-time ESLint toolchain rather than the direct Next.js runtime package; they still require package-level review before claiming a fully clean audit or publishing a production-oriented release. The dependency changes were merged only after their remediation workflows and main-branch CI passed; no `--force` upgrade was used.
 
-References: [proxy-addr advisory](https://github.com/advisories/GHSA-jqcg-44mw-7w3h), [Engine.IO advisory](https://github.com/advisories/GHSA-2gc4-cqfq-p2gv), [Socket.IO parser advisory](https://github.com/advisories/GHSA-2m8v-j782-fhvr), [Next.js advisory](https://github.com/advisories/GHSA-8h8q-6873-q5fj).
+References: [Historical proxy-addr advisory](https://github.com/advisories/GHSA-jqcg-44mw-7w3h), [Historical Engine.IO advisory](https://github.com/advisories/GHSA-2gc4-cqfq-p2gv), [Historical Socket.IO parser advisory](https://github.com/advisories/GHSA-2m8v-j782-fhvr), [Historical Next.js advisory](https://github.com/advisories/GHSA-8h8q-6873-q5fj), [Current unpatched `braces` advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm).
 
 ## Limitations
 
@@ -96,6 +96,6 @@ References: [proxy-addr advisory](https://github.com/advisories/GHSA-jqcg-44mw-7
 - Express and NestJS include local two-client Engine.IO/Socket.IO polling integration tests; the ASP.NET Core Hub now has a live two-client WebSocket/SignalR integration test. Both browser clients still rely on unit-level LNASF tests rather than browser-driven or live-hub integration. The family has no load tests, chaos tests, or statistically valid real-network performance benchmark.
 - Candidate delays, cooldown bounds and policy thresholds are fixed. The model does not learn arbitrary parameters and cannot override the policy.
 - Autonomous mode is intentionally not implemented in these examples.
-- Dependency audit summaries still report advisories in the JavaScript projects. The counts are documented separately in the repository CI logs; each finding needs package-level triage before production release.
+- Current npm audit snapshots are clean for Express, NestJS and React. Next.js still has five high-severity findings in the development-only ESLint dependency tree, including `braces` for which the advisory currently has no patched package release. The Next.js/SignalR app has no live-Hub integration test; the two frontend clients still need network/connection integration coverage and the family still has no load, chaos or statistically valid real-network performance benchmark.
 
 These repositories demonstrate real native learning-to-decision paths and bounded actions for selected runtime problems. They do not represent the full LNASF framework, and no performance improvement is claimed without an appropriate benchmark.
