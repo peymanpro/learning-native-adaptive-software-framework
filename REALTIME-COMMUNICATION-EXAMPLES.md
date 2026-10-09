@@ -93,7 +93,7 @@ References: [proxy-addr advisory](https://github.com/advisories/GHSA-jqcg-44mw-7
 - Learning is local and ephemeral. The examples do not persist models across restarts or implement shared multi-instance learning.
 - The server-side typing model optimizes a proxy—the number of duplicate start notifications—not measured user-perceived quality or latency.
 - The reconnect model observes outcomes after selected delays; success/failure is not proof that a delay caused the result. Network conditions and timing can confound observations.
-- Express and NestJS include a local two-client Engine.IO/Socket.IO polling integration test for the bounded typing-burst behavior. The ASP.NET Core Hub and both browser clients still rely on unit-level LNASF tests; the overall family has no load tests, chaos tests, or statistically valid real-network performance benchmark.
+- Express and NestJS include local two-client Engine.IO/Socket.IO polling integration tests; the ASP.NET Core Hub now has a live two-client WebSocket/SignalR integration test. Both browser clients still rely on unit-level LNASF tests rather than browser-driven or live-hub integration. The family has no load tests, chaos tests, or statistically valid real-network performance benchmark.
 - Candidate delays, cooldown bounds and policy thresholds are fixed. The model does not learn arbitrary parameters and cannot override the policy.
 - Autonomous mode is intentionally not implemented in these examples.
 - Dependency audit summaries still report advisories in the JavaScript projects. The counts are documented separately in the repository CI logs; each finding needs package-level triage before production release.
