@@ -57,7 +57,7 @@ Configure NEXT_PUBLIC_LNASF_MODE for Next.js/SignalR and VITE_LNASF_MODE for Rea
 
 The tests inject deterministic timestamps or synthetic outcome counts to establish model updates, the separation between prediction and action, mode behavior, fallback, feedback and retry limits. They do not simulate a real network and do not support a real-world reconnect-performance claim.
 
-The retry classifiers inspect both direct status fields and common nested transport shapes (`data`, `description`, and `response`). Known permanent HTTP statuses stop the episode without being recorded as a delay-specific failure. Terminal diagnostics retain the actual retry index and elapsed episode duration for troubleshooting.
+The retry classifiers inspect both direct status fields and common nested transport shapes (`data`, `description`, and `response`). Known permanent HTTP statuses stop the episode without being recorded as a delay-specific failure. In the React/Socket.IO client, `io server disconnect` and `io client disconnect` are also classified as non-retryable disconnect reasons; a server-forced disconnect is surfaced to the user and requires an explicit manual retry. Terminal diagnostics retain the actual retry index and elapsed episode duration for troubleshooting.
 
 ## Verified GitHub Actions and test coverage
 
@@ -65,17 +65,17 @@ The following runs were verified as successful on the current source changes or 
 
 | Repository | Verified checks | Workflow |
 | --- | --- | --- |
-| Express + Socket.IO | Syntax checks and 12 Node tests, including model/policy tests and a live two-client Engine.IO polling integration that verifies adaptive duplicate-start suppression while typing-stop and primary chat messages still pass through | [Successful CI after dependency remediation](https://github.com/peymanpro/socketio-express/actions/runs/37994554777) |
-| NestJS + Socket.IO | NestJS 12/TypeScript 6 build and 9 Node tests, including model/policy checks and live two-client Socket.IO transport integration for adaptive typing suppression, typing-stop, and primary chat delivery | [Successful CI after dependency remediation](https://github.com/peymanpro/socketio-nestjs/actions/runs/37994534363) |
+| Express + Socket.IO | Syntax checks and 12 Node tests, including model/policy tests and a live two-client Engine.IO polling integration that verifies adaptive duplicate-start suppression while typing-stop and primary chat messages still pass through | [Successful CI after dependency remediation](https://github.com/peymanpro/socketio-express/actions/runs/37996981426) |
+| NestJS + Socket.IO | NestJS 12/TypeScript 6 build and 9 Node tests, including model/policy checks and live two-client Socket.IO transport integration for adaptive typing suppression, typing-stop, and primary chat delivery | [Successful CI after dependency remediation](https://github.com/peymanpro/socketio-nestjs/actions/runs/37997132144) |
 | ASP.NET Core + SignalR | .NET 8 Release build (0 warnings/errors) and 20 xUnit tests, including a live two-client WebSocket/SignalR Hub integration verifying adaptive typing suppression while stop and primary messages remain deliverable | [Successful CI](https://github.com/peymanpro/signalr-aspnetcore/actions/runs/37991401270) |
-| Next.js + SignalR | Next.js 16.4.0 / React 19.3.0; independent ESLint 9; 15 unit tests plus a live two-connection integration with the actual ASP.NET Core Hub covering join, message, and typing events | [Successful main-branch live-Hub CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37996041822) |
-| React + Socket.IO | Migrated from Create React App to Vite/Vitest; ESLint 9, 13 unit tests, bounded 1,000-message history, plus two rendered clients integrated with the actual Express/Socket.IO backend for join, typing, and message delivery | [Successful live-client CI](https://github.com/peymanpro/socketio-react/actions/runs/37995967533) |
+| Next.js + SignalR | Next.js 16.4.0 / React 19.3.0; independent ESLint 9; 15 unit tests plus a live two-connection integration with the actual ASP.NET Core Hub covering join, message, and typing events | [Successful main-branch live-Hub CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37997037738) |
+| React + Socket.IO | Migrated from Create React App to Vite/Vitest; ESLint 9, 13 unit tests, bounded 1,000-message history, plus two rendered clients integrated with the actual Express/Socket.IO backend for join, typing, and message delivery | [Successful live-client CI](https://github.com/peymanpro/socketio-react/actions/runs/37997301550) |
 
 These links are snapshots from GitHub Actions. Later commits or dependency updates can change the current status.
 
 ## Dependency security audit snapshot
 
-The JavaScript CI workflows run a non-blocking, package-level npm audit report. The original snapshot was recorded on 2026-10-09; the table below records the post-remediation `main` CI snapshots verified on 2026-10-09/10.
+The JavaScript CI workflows emit a package-level npm audit report and then enforce `npm audit --audit-level=high`; high and critical findings fail CI, while lower-severity findings remain visible in the report. The original snapshot was recorded on 2026-10-09; the table below records post-remediation `main` CI snapshots verified on 2026-10-09/10.
 
 | Repository | Audit summary | Finding to prioritize | Interpretation |
 | --- | --- | --- | --- |
