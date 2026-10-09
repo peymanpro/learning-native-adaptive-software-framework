@@ -37,6 +37,10 @@ The [LNASF Adaptive Admin Console](https://github.com/peymanpro/angular-standalo
 
 This implementation is an engineering demonstration—not a claim that the full LNASF framework is complete or that adaptive preloading has already produced a measured performance gain. Its README documents the architecture, tests, evaluation protocol, and current limitations.
 
+## Real-Time Communication Examples
+
+The [LNASF real-time communication examples](REALTIME-COMMUNICATION-EXAMPLES.md) document five limited integrations across Express, NestJS, ASP.NET Core, Next.js and React. They make host-native learning, explicit prediction/decision separation, bounded adaptation, deterministic fallback, and runtime measurement executable. The document links the relevant code/test areas through each repository's README and records verified CI evidence. It distinguishes synthetic unit-level checks from real-world performance claims; these are selected reference examples, not complete LNASF implementations.
+
 ## Files
 
 - `SPECIFICATION.md` - editable specification with LaTeX math.
