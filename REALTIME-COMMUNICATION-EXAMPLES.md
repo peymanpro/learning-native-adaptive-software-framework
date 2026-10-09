@@ -65,8 +65,8 @@ The following runs were verified as successful on the current source changes or 
 
 | Repository | Verified checks | Workflow |
 | --- | --- | --- |
-| Express + Socket.IO | Syntax checks and 10 Node tests, including validation, health and metrics endpoint, model update, operating modes, fallback and a deterministic baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-express/actions/runs/37987137631) |
-| NestJS + Socket.IO | TypeScript build and 8 Node tests, including model learning, action separation, fallback and same-trace baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-nestjs/actions/runs/37987142963) |
+| Express + Socket.IO | Syntax checks and 12 Node tests, including model/policy tests and a live two-client Engine.IO polling integration that verifies adaptive duplicate-start suppression while typing-stop and primary chat messages still pass through | [Successful CI](https://github.com/peymanpro/socketio-express/actions/runs/37990845989) |
+| NestJS + Socket.IO | TypeScript build and 9 Node tests, including model/policy checks and live two-client Socket.IO transport integration for adaptive typing suppression, typing-stop, and primary chat delivery | [Successful CI](https://github.com/peymanpro/socketio-nestjs/actions/runs/37990886360) |
 | ASP.NET Core + SignalR | .NET 8 Release build and 19 xUnit tests, including validation, LNASF modes, fallback and baseline comparison | [Successful CI](https://github.com/peymanpro/signalr-aspnetcore/actions/runs/37986010145) |
 | Next.js + SignalR | Lint, syntax checks, 15 Node tests and production build | [Successful CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37990292184) |
 | React + Socket.IO | 2 Jest suites, 10 tests and production build | [Successful CI](https://github.com/peymanpro/socketio-react/actions/runs/37990300412) |
@@ -93,7 +93,7 @@ References: [proxy-addr advisory](https://github.com/advisories/GHSA-jqcg-44mw-7
 - Learning is local and ephemeral. The examples do not persist models across restarts or implement shared multi-instance learning.
 - The server-side typing model optimizes a proxy—the number of duplicate start notifications—not measured user-perceived quality or latency.
 - The reconnect model observes outcomes after selected delays; success/failure is not proof that a delay caused the result. Network conditions and timing can confound observations.
-- The current suites are unit-level tests. They are not live multi-client integration tests, load tests, chaos tests or statistically valid performance benchmarks.
+- Express and NestJS include a local two-client Engine.IO/Socket.IO polling integration test for the bounded typing-burst behavior. The ASP.NET Core Hub and both browser clients still rely on unit-level LNASF tests; the overall family has no load tests, chaos tests, or statistically valid real-network performance benchmark.
 - Candidate delays, cooldown bounds and policy thresholds are fixed. The model does not learn arbitrary parameters and cannot override the policy.
 - Autonomous mode is intentionally not implemented in these examples.
 - Dependency audit summaries still report advisories in the JavaScript projects. The counts are documented separately in the repository CI logs; each finding needs package-level triage before production release.
