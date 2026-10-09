@@ -65,9 +65,9 @@ The following runs were verified as successful on the current source changes or 
 
 | Repository | Verified checks | Workflow |
 | --- | --- | --- |
-| Express + Socket.IO | Syntax checks and 12 Node tests, including model/policy tests and a live two-client Engine.IO polling integration that verifies adaptive duplicate-start suppression while typing-stop and primary chat messages still pass through | [Successful CI](https://github.com/peymanpro/socketio-express/actions/runs/37990845989) |
-| NestJS + Socket.IO | TypeScript build and 9 Node tests, including model/policy checks and live two-client Socket.IO transport integration for adaptive typing suppression, typing-stop, and primary chat delivery | [Successful CI](https://github.com/peymanpro/socketio-nestjs/actions/runs/37990886360) |
-| ASP.NET Core + SignalR | .NET 8 Release build (0 warnings/errors) and 20 xUnit tests, including a live two-client WebSocket/SignalR Hub integration verifying adaptive typing suppression while stop and primary messages remain deliverable | [Successful CI](https://github.com/peymanpro/signalr-aspnetcore/actions/runs/37991297871) |
+| Express + Socket.IO | Syntax checks and 12 Node tests, including model/policy tests and a live two-client Engine.IO polling integration that verifies adaptive duplicate-start suppression while typing-stop and primary chat messages still pass through | [Successful CI](https://github.com/peymanpro/socketio-express/actions/runs/37990992781) |
+| NestJS + Socket.IO | TypeScript build and 9 Node tests, including model/policy checks and live two-client Socket.IO transport integration for adaptive typing suppression, typing-stop, and primary chat delivery | [Successful CI](https://github.com/peymanpro/socketio-nestjs/actions/runs/37990998396) |
+| ASP.NET Core + SignalR | .NET 8 Release build (0 warnings/errors) and 20 xUnit tests, including a live two-client WebSocket/SignalR Hub integration verifying adaptive typing suppression while stop and primary messages remain deliverable | [Successful CI](https://github.com/peymanpro/signalr-aspnetcore/actions/runs/37991401270) |
 | Next.js + SignalR | Lint, syntax checks, 15 Node tests and production build | [Successful CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37990292184) |
 | React + Socket.IO | 2 Jest suites, 10 tests and production build | [Successful CI](https://github.com/peymanpro/socketio-react/actions/runs/37990300412) |
 
