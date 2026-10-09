@@ -66,8 +66,8 @@ The following runs were verified as successful on the current source changes or 
 | Express + Socket.IO | Syntax checks and 10 Node tests, including validation, health and metrics endpoint, model update, operating modes, fallback and a deterministic baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-express/actions/runs/37986262861) |
 | NestJS + Socket.IO | TypeScript build and 8 Node tests, including model learning, action separation, fallback and same-trace baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-nestjs/actions/runs/37986269231) |
 | ASP.NET Core + SignalR | .NET 8 Release build and 19 xUnit tests, including validation, LNASF modes, fallback and baseline comparison | [Successful CI](https://github.com/peymanpro/signalr-aspnetcore/actions/runs/37986010145) |
-| Next.js + SignalR | Lint, syntax checks, 13 Node tests and production build | [Successful CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37986275372) |
-| React + Socket.IO | 2 Jest suites, 8 tests and production build | [Successful CI](https://github.com/peymanpro/socketio-react/actions/runs/37986280943) |
+| Next.js + SignalR | Lint, syntax checks, 15 Node tests and production build | [Successful CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37986826784) |
+| React + Socket.IO | 2 Jest suites, 10 tests and production build | [Successful CI](https://github.com/peymanpro/socketio-react/actions/runs/37986790513) |
 
 These links are snapshots from GitHub Actions. Later commits or dependency updates can change the current status.
 
