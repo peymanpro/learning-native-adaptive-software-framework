@@ -57,6 +57,8 @@ Configure NEXT_PUBLIC_LNASF_MODE for Next.js/SignalR and REACT_APP_LNASF_MODE fo
 
 The tests inject deterministic timestamps or synthetic outcome counts to establish model updates, the separation between prediction and action, mode behavior, fallback, feedback and retry limits. They do not simulate a real network and do not support a real-world reconnect-performance claim.
 
+The retry classifiers inspect both direct status fields and common nested transport shapes (`data`, `description`, and `response`). Known permanent HTTP statuses stop the episode without being recorded as a delay-specific failure. Terminal diagnostics retain the actual retry index and elapsed episode duration for troubleshooting.
+
 ## Verified GitHub Actions and test coverage
 
 The following runs were verified as successful on the current source changes or their documentation-only successors.
@@ -66,8 +68,8 @@ The following runs were verified as successful on the current source changes or 
 | Express + Socket.IO | Syntax checks and 10 Node tests, including validation, health and metrics endpoint, model update, operating modes, fallback and a deterministic baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-express/actions/runs/37987137631) |
 | NestJS + Socket.IO | TypeScript build and 8 Node tests, including model learning, action separation, fallback and same-trace baseline comparison | [Successful CI](https://github.com/peymanpro/socketio-nestjs/actions/runs/37987142963) |
 | ASP.NET Core + SignalR | .NET 8 Release build and 19 xUnit tests, including validation, LNASF modes, fallback and baseline comparison | [Successful CI](https://github.com/peymanpro/signalr-aspnetcore/actions/runs/37986010145) |
-| Next.js + SignalR | Lint, syntax checks, 15 Node tests and production build | [Successful CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37987147537) |
-| React + Socket.IO | 2 Jest suites, 10 tests and production build | [Successful CI](https://github.com/peymanpro/socketio-react/actions/runs/37987154031) |
+| Next.js + SignalR | Lint, syntax checks, 15 Node tests and production build | [Successful CI](https://github.com/peymanpro/signalr-nextjs/actions/runs/37990292184) |
+| React + Socket.IO | 2 Jest suites, 10 tests and production build | [Successful CI](https://github.com/peymanpro/socketio-react/actions/runs/37990300412) |
 
 These links are snapshots from GitHub Actions. Later commits or dependency updates can change the current status.
 
